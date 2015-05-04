@@ -1,0 +1,15 @@
+{
+    "description": "%(description)s",
+    "short_description": "%(description)s",
+    "name": "polymorphic/%(name)s",
+    "versions": [{
+        "version": "%(version)s",
+        "status": "active",
+        "description_html": "<p>%(description)s</p>",
+        "description_markdown": "%(description)s",
+        "providers": [{
+            "name": "virtualbox",
+            "url": "http:\/\/%(host)s/%(name)s.box"
+        }]
+    }]
+}

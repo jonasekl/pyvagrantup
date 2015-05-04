@@ -1,20 +1,25 @@
-import os
+import os,yaml,json
 from flask import Flask, Response, request
 
 BOXES_PATH='./boxes'
+METADATA_PATH='./metadata'
+app = Flask(__name__)
+app.debug = True
 
-app = Flask()
-
-@app.route('/images')
-def boxes():
-    for box in os.listdir(BOXES_PATH):
-        print box
+@app.route('/')
+def list_boxes():
+    boxes = []
+    for box in [x for x in os.listdir(METADATA_PATH) if '.yml' in x]:
+        boxes.append(yaml.load(open('%s/%s' % (METADATA_PATH, box)).read()))
+    return Response(json.dumps(boxes, indent=4), mimetype='application/json')
 
 @app.route('/<box_name>/metadata.json')
 def metadata_json(box_name):
-    return Response(open('%s/%s/metadata.json' % (BOXES_PATH, box_name)).read(), mimetype='application/json')
+    params = yaml.load(open('%s/%s.yml' % (METADATA_PATH, box_name)).read())
+    params['host'] = request.host
+    return Response(open('%s/metadata.json' % METADATA_PATH).read() % params, mimetype='application/json')
 
-@app.route('<box_name>/<box_file>.box')
+@app.route('/<box_name>/<box_file>.box')
 def box_file(box_name, box_file):
     return Response(open('%s/%s/%s.box' % (BOXES_PATH, box_name, box_file)).read())
 
