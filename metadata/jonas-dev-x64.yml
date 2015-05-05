@@ -1,6 +1,4 @@
----
-name: jonas-dev-x64
-description: Jonas dev box
-version: 1
 base: jonas-deb-01
-
+description: Jonas dev box
+name: jonas-dev-x64
+version: 2
